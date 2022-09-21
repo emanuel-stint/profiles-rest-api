@@ -12,28 +12,26 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
     """Manager for UserProfiles"""
 
-    def create_user(self, email, name, password):
+    def create_user(self, email, first_name, last_name, password, **extra_fields):
         """create a new user profile"""
         if not email:  # i.e. empty string or null
             raise ValueError('User must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        user = self.model(email=email, first_name=first_name,
+                          last_name=last_name, **extra_fields)
 
         # Ensures that password is hashed, and not exposed -> encryption
         user.set_password(password)
         # Specifying where you are going to save these users
         user.save(using=self.db)
 
-    def create_super_user(self, email, name, password):
-        """Create and save a new superusr with given details"""
+    def create_superuser(self, email, first_name, last_name, password):
+        """Create and save a new superuser with given details"""
 
         # self auto passed in already
-        user = self.create_user(email, name, password)
-
-        user.is_superuser = True
-        user.is_staff = True
-        user.save(using=self.db)
+        user = self.create_user(
+            email, first_name, last_name, password, is_superuser=True, is_staff=True)
 
         return user
 
@@ -58,7 +56,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     # Required fields
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     # custom functions now for model
     def get_full_name(self):
