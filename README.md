@@ -20,3 +20,8 @@ When to use?
 - processing files and rendering a synchronous reponse
 - calling other APIs/services in same request
 - accessing local files or data
+
+Note:
+Serializer
+
+- feature from ret frasmewokr, convert data inputs into python objects
