@@ -2,7 +2,7 @@
 
 Profiles REST API course code.
 
-API VIEW & VIEWSET
+API VIEW & VIEWSET -> classes for writing api
 
 API VIEW
 
@@ -25,3 +25,10 @@ Note:
 Serializer
 
 - feature from ret frasmewokr, convert data inputs into python objects
+
+VIEWSET
+
+- uses model operations for functions e.g. list to get list of objects, create to create objects ..
+- perfect for standard database operations
+- a quick / simple api
+- little to no customization on logic

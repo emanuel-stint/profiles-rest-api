@@ -9,8 +9,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 # Used to determine responses from api -> status codes
 from rest_framework import status
+# Creating viewsets
+from rest_framework import viewsets
 
 from profiles_api import serializers
+
 
 # Create your views here.
 
@@ -53,13 +56,62 @@ class TestApiView(APIView):
 
     # Usually when doing a put / patch -> you would do it to a pk: primary key, as the update is associated with a spcific object
     def put(self, request, pk=None):
+        """Handle updating object, completely"""
         return Response({
             'method': 'PUT'
         })
 
     # This is a partial udpate -> i.e. only update the fields that were included in the request, everything else stays the same
     def patch(self, request, pk=None):
+        """Handle partially updating object, with fields included in request"""
         return Response({'method': 'PATCH'})
 
     def delete(self, request, pk=None):
+        """Handle deleting a particular object"""
         return Response({'method': 'DELETE'})
+
+
+class TestViewSet(viewsets.ViewSet):
+    """Test API viewset"""
+
+    # Uses actions -> list, create, retrieve, update, partial_update
+    # Automaticallys maps urls using 'Routers'
+    # Provides more functionality with less code
+
+    serializer_class = serializers.TestSerializer
+
+    def list(self, request):
+        """Reurn a hello message"""
+        a_viewset = [
+            'Hello hi'
+        ]
+
+        return Response({'message': 'hello!', 'a_viewset': a_viewset})
+
+    def create(self, request):
+        """Create a hello message"""
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}'
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        """Fetch info about particular object"""
+        return Response({'method': 'RETRIEVE'})
+
+    def update(self, request, pk=None):
+        """Update particular object completely"""
+        return Response({'method': 'UPDATE'})
+
+    def partially_update(self, request, pk=None):
+        """Partially update object with fields included in request"""
+        return Response({'method': 'PARTIALLY_UPDATE'})
+
+    def destroy(self, request, pk=None):
+        """Handle deleting an object"""
+        return Response({'method': 'DESTROY'})
