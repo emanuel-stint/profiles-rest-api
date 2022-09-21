@@ -11,9 +11,14 @@ from rest_framework.response import Response
 from rest_framework import status
 # Creating viewsets
 from rest_framework import viewsets
+# authentication for users
+from rest_framework.authentication import TokenAuthentication
+# filtering to a viewset
+from rest_framework import filters
 
 from profiles_api import serializers
 from profiles_api import models
+from profiles_api import permissions
 
 
 # Create your views here.
@@ -128,3 +133,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     # the standard functions you want to perform on model
     queryset = models.UserProfile.objects.all()
+    # authentication classes
+    # Comma added to make sure created as tuple
+    authentication_classes = (TokenAuthentication,)
+    # permission classes
+    permission_classes = (permissions.UpdateOwnProfile,)
+    # filter classes
+    filter_backends = (filters.SearchFilter,)
+    # search fields -> which fields will be made searchable
+    search_fields = ('first_name', 'last_name', 'email',)
