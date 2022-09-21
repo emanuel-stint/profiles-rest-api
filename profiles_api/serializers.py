@@ -11,7 +11,7 @@ class TestSerializer(serializers.Serializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """Serializers a user profile object"""
+    """Serializes a user profile object"""
 
     # meta class to point at particular model
     # list fields we want accessible in serializer
@@ -51,3 +51,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
             instance.set_password(password)
 
         return super().update(instance, validated_data)
+
+
+class FeedSerializer(serializers.Serializer):
+    """Serializes a user profile object"""
+
+    # Write code here

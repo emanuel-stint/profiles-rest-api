@@ -8,6 +8,7 @@ router.register('test-viewset', views.TestViewSet, basename='test-viewset')
 ####
 # if queryset provided, no need for basename
 router.register('user-profile', views.UserProfileViewSet)
+router.register('feed', views.FeedViewSet)
 
 urlpatterns = [
     # note -> rendering api view here is calling the relevant function

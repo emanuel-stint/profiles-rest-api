@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
 
 # modal -> table in a database effectively..
 
@@ -71,3 +72,22 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of our user --> on django admin basically"""
         return self.email
+
+
+class Feed(models.Model):
+    """Profile status update"""
+
+    # linking one model to another -> foreign keys
+    # reference settings so you can just change in settings, as opposed to hard coding
+    # on delete tells you what happens if user profile is deleted
+    # cascade means you cascade the change down i.e. delete the feed as well
+    created_at = models.DateTimeField(auto_now_add=True)
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=144)
+    description = models.CharField(max_length=300)
+
+    def __str__(self):
+        """Return the model as a string -> basically what you see on django admin"""
+
+        return self.title

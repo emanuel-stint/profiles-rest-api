@@ -146,6 +146,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     search_fields = ('first_name', 'last_name', 'email',)
 
 
+class FeedViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating feeds"""
+
+    # Write code here
+    serializer_class = serializers.FeedSerializer()
+
+
 class UserLogInAPIView(ObtainAuthToken):
     """Handle creating user auth tokens"""
 
