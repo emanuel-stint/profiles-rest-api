@@ -13,6 +13,7 @@ from rest_framework import status
 from rest_framework import viewsets
 
 from profiles_api import serializers
+from profiles_api import models
 
 
 # Create your views here.
@@ -115,3 +116,15 @@ class TestViewSet(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         """Handle deleting an object"""
         return Response({'method': 'DESTROY'})
+
+##########
+
+# MODEL VIEW SET
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+
+    serializer_class = serializers.UserProfileSerializer
+    # the standard functions you want to perform on model
+    queryset = models.UserProfile.objects.all()

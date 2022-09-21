@@ -5,6 +5,9 @@ from profiles_api import views
 # note router will create urls for you, so no need to specify /
 router = DefaultRouter()
 router.register('test-viewset', views.TestViewSet, basename='test-viewset')
+####
+# if queryset provided, no need for basename
+router.register('user-profile', views.UserProfileViewSet)
 
 urlpatterns = [
     # note -> rendering api view here is calling the relevant function
