@@ -15,7 +15,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 # filtering to a viewset
 from rest_framework import filters
 
@@ -156,8 +156,8 @@ class FeedViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FeedSerializer
     permission_classes = (
         permissions.UpdateOwnFeed,
-        # user must be authenicated -> otherwise just read
-        IsAuthenticatedOrReadOnly
+        # user must be authenicated -> otherwise just read // with isauthenticated, just allows call to be made if authenticated
+        IsAuthenticated
     )
     queryset = models.Feed.objects.all()
 
