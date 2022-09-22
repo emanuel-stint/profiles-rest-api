@@ -53,7 +53,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class FeedSerializer(serializers.Serializer):
-    """Serializes a user profile object"""
+class FeedSerializer(serializers.ModelSerializer):
+    """Serializes a feed"""
 
     # Write code here
+    class Meta:
+        model = models.Feed
+        # make sure all fields present in serializer
+        # by default id is set to models on db by django
+        # only fields writeable -> userprofile, title and description
+        # note we do not want a user to be able to assign userprofile
+        # we want assignment to be based on auth user
+        fields = ('id', 'created_at', 'user_profile', 'title', 'description')
+        extra_kwargs = {
+            'user_profile': {
+                'read_only': True,
+            }
+        }

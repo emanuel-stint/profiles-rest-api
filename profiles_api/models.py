@@ -83,7 +83,7 @@ class Feed(models.Model):
     # cascade means you cascade the change down i.e. delete the feed as well
     created_at = models.DateTimeField(auto_now_add=True)
     user_profile = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=144)
     description = models.CharField(max_length=300)
 

@@ -15,6 +15,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # filtering to a viewset
 from rest_framework import filters
 
@@ -147,10 +148,27 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 class FeedViewSet(viewsets.ModelViewSet):
-    """Handle creating and updating feeds"""
+    """Handle creating, reading and updating feeds"""
 
     # Write code here
-    serializer_class = serializers.FeedSerializer()
+    # to authenticate all our requests
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.FeedSerializer
+    permission_classes = (
+        permissions.UpdateOwnFeed,
+        # user must be authenicated -> otherwise just read
+        IsAuthenticatedOrReadOnly
+    )
+    queryset = models.Feed.objects.all()
+
+    # override custom behaviour of creating object
+    # when new profile created, django calls perform create
+    # passes serializer we are using, it has a save function assigned to it
+    # can save content of serizalier to db
+    # here we are doing ADDITIONAL operation for serializer
+    def perform_create(self, serializer):
+        """Sets the user profile to the logged in user"""
+        serializer.save(user_profile=self.request.user)
 
 
 class UserLogInAPIView(ObtainAuthToken):
